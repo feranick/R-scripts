@@ -2,7 +2,7 @@
 #
 # Conversion of tables with variables into required MClust formatting
 #
-# Version 20130414b
+# Version 20130415a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -10,7 +10,7 @@
 #
 ##########################################################
 
-inputFile="simplem-col.txt"
+inputFile="dg-col.txt"
 
 csvOut=F  # Set to false is normal txt output
 
@@ -41,7 +41,8 @@ m=read.table(inputFile, header = FALSE, fill = TRUE)
 y <- matrix(scan(inputFile, n = (nrow(m))*(ncol(m)), what = character(0)), nrow(m), ncol(m), byrow = TRUE)
 
 d=matrix(NA , (nrow(y)-1)*(ncol(y)-1), 2)
-
+colnames(d) <- c("Parameter", "Value")
+print(colnames(d))
 
 k=1
 for(i in 2:nrow(y)){
@@ -58,4 +59,4 @@ for(i in 2:nrow(y)){
 #write.table(a, file = outputFile, col.names = T, row.names = F)
 if(csvOut==TRUE){
     write.csv(d, file = outputFile, row.names = F)} else {
-    write.table(d, file = outputFile, quote = FALSE, sep = "\t", col.names = F, row.names = F)}
+    write.table(d, file = outputFile, quote = FALSE, sep = "\t", col.names = T, row.names = F)}

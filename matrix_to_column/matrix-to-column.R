@@ -2,7 +2,7 @@
 #
 # Conversion of LabSpec Maps/Matrices into single columns
 #
-# Version 2-20130415a
+# Version 20130415a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -10,10 +10,10 @@
 #
 ##########################################################
 
-inputFile="simplem.txt"
+inputFile="dg.txt"
 XName="X"
 YName="Y"
-csvOut=T  # Set to false is normal txt output
+csvOut=F  # Set to false is normal txt output
 
 # Headers and Definitions
 parValue=gsub(".txt","",inputFile)
