@@ -2,7 +2,7 @@
 #
 # Group data from several files into one with filename
 #
-# Version 1-20130421b
+# Version 1-20130422a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -48,6 +48,7 @@ tb<-t(b)
 write.table(b,file="1b.csv", col.names = FALSE, row.names = F, sep=",")
 write.table(tb,file="1tb.csv", col.names = FALSE, row.names = F, sep=",")
 
+class(tb)<-"numeric"
 
 
 
