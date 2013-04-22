@@ -2,7 +2,7 @@
 #
 # Group data from several files into one with filename
 #
-# Version 1-20130421a
+# Version 1-20130421b
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -43,7 +43,10 @@ for (i in seq(1,nrow(f),1)){
 	
 }
 
+tb<-t(b)
+
 write.table(b,file="1b.csv", col.names = FALSE, row.names = F, sep=",")
+write.table(tb,file="1tb.csv", col.names = FALSE, row.names = F, sep=",")
 
 
 
