@@ -4,7 +4,7 @@
 #
 # Conversion of LabSpec Maps/Matrices into single columns with plots
 #
-# Version 3-20130425a
+# Version 3-20150317
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -12,10 +12,11 @@
 #
 #####################################################################
 
-library(plyr); library(akima); 
+library(plyr); library(akima); library(Hmisc);library(akima); 
+library(fields);library(plotrix);library(spatstat);
 
 csvOut=T  # Set to false is normal txt output
-outFile="Collective"
+outFile="Collective_prototaxities"
 dimPlot= 7  #Dimension of the plots in output (7 default)
 
 XName="X"
@@ -137,6 +138,11 @@ pdf(file=paste(outFile,"-maps.pdf",sep=""), width=dimPlot, height=dimPlot, onefi
 
 
 for(p in 1:nrow(ft)){
-image(interp(Cm[,1],Cm[,2],data[,p]), cex.lab=1.7,main=f[p], xlab="[um]",ylab="[um]")
+	
+	interpol = interp(Cm[,1],Cm[,2],data[,p])
+	image.plot(interpol, cex.lab=1.7,main=f[p], legend.args=list( text="",cex=1.0, side=3, line=1), zlim=c(min(data[,p]),max(data[,p])),xlab="[um]",ylab="[um]")
+	
+	interpol2 = as.im(interpol)
+	plot(interpol2, main=f[p])
 }
 dev.off()
