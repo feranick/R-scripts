@@ -4,7 +4,7 @@
 #
 # Conversion of LabSpec Maps/Matrices into single columns with plots
 #
-# Version 3-20150318
+# Version 3-20150319
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -142,7 +142,8 @@ pdf(file=paste(outFile,"-maps.pdf",sep=""), width=dimPlot, height=dimPlot, onefi
 for(p in 1:nrow(ft)){
 	
 	interpol = interp(Cm[,1],Cm[,2],data[,p])
-	image.plot(interpol, cex.lab=1.7,main=f[p], legend.args=list( text="",cex=1.0, side=3, line=1), zlim=c(min(data[,p]),max(data[,p])),xlab="[um]",ylab="[um]")
+	
+		image.plot(interpol, cex.lab=1.7,legend.args=list( text="",cex=1.0, side=3, line=1), zlim=c(min(data[,p]),max(data[,p])),xlab="[um]",ylab="[um]", main=paste(f[p],"\nAverage = ", format(round(mean(data[,p]),3),nsmall=3), "\u00b1", format(round(sd(data[,p]),3),nsmall=3)))
 	
 		image.plot(interpol, cex.lab=1.7,main=f[p], legend.args=list( text="",cex=1.0, side=3, line=1), zlim=c(min(data[,p]),max(data[,p])),xlab="[um]",ylab="[um]", col = pal)
 	
