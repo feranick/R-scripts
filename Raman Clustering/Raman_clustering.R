@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 1-20130514a
+# Version 1-20150914a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -10,11 +10,15 @@
 #
 ##########################################################
 
-sampleName<- "HVA6Vg3m1-clan"
+sampleName<- "test-col-clan"
+#sampleName<- "Draken_intensities_map1_fit2-col-clan"
 
 NumPar=6
- Par=c("D5G","D4G","D1G","D4GD5G","DG","wG")
-#Par=c("A",  "B", "C",  "D",  "E", "F")
+ Par=c("HC","wG","D5G","D1G","D4D5G","DG")
+# Par=c("HC","wG","G","D1","D5","D4")
+#Par=c("A","B","C", "D","E","F")
+
+maxClust=6
 
 dimPlot=8
 normcoord=T
@@ -22,9 +26,7 @@ normcoord=T
 skimData=F
 
 limClust=F
-maxClust=9
-
-plotClust=T
+plotClust=F
 
 ############################
 # File name management 
@@ -330,7 +332,85 @@ image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab
 #legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase,pch = 1:numPhase%%10+15, cex = 1.5)
 #grid(gridx,gridy, lwd = 1,equilogs =FALSE)
 
+#-----
+
+layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+
+plot(A,C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[3],xlim=c(min(A),max(A)),ylim=c(min(C),max(C)))
+legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+grid(NULL, lwd = 1,equilogs =FALSE)
+
+image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
+
+#-----
+
+layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+
+plot(A,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[4],xlim=c(min(A),max(A)),ylim=c(min(D),max(D)))
+legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+grid(NULL, lwd = 1,equilogs =FALSE)
+
+image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
+
+#-----
+
+layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+
+plot(A,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[5],xlim=c(min(A),max(A)),ylim=c(min(E),max(E)))
+legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+grid(NULL, lwd = 1,equilogs =FALSE)
+
+image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
+
+#-----
+
+layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+
+plot(A,F,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[6],xlim=c(min(A),max(A)),ylim=c(min(F),max(F)))
+legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+grid(NULL, lwd = 1,equilogs =FALSE)
+
+image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
+
+#-----
+
+layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+
+plot(C,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[5],xlim=c(min(C),max(C)),ylim=c(min(E),max(E)))
+legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+grid(NULL, lwd = 1,equilogs =FALSE)
+
+image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
+
+#-----
+
+layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+
+plot(C,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[4],xlim=c(min(C),max(C)),ylim=c(min(D),max(D)))
+legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+grid(NULL, lwd = 1,equilogs =FALSE)
+
+image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
+
+#-----
+
+layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+
+plot(C,F,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[6],xlim=c(min(C),max(C)),ylim=c(min(F),max(F)))
+legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+grid(NULL, lwd = 1,equilogs =FALSE)
+
+image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
+
 dev.off()
+
 
 #####################################
 # Mapping the clustering plots

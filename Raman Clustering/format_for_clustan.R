@@ -10,7 +10,7 @@
 #
 ##########################################################
 
-inputFile="dg-col.txt"
+inputFile="test-col.txt"
 
 csvOut=F  # Set to false is normal txt output
 
