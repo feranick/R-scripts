@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 1-20150914a
+# Version 1-20150914c
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -11,10 +11,10 @@
 ##########################################################
 
 sampleName<- "test-col-clan"
-#sampleName<- "Draken_intensities_map1_fit2-col-clan"
+# sampleName<- "test2-col-clan"
 
 NumPar=6
- Par=c("HC","wG","D5G","D1G","D4D5G","DG")
+ Par=c("HC","wG","D1G","D4D5G","DG","D5G")
 # Par=c("HC","wG","G","D1","D5","D4")
 #Par=c("A","B","C", "D","E","F")
 
@@ -26,7 +26,7 @@ normcoord=T
 skimData=F
 
 limClust=F
-plotClust=F
+plotClust=T
 
 ############################
 # File name management 
@@ -170,6 +170,13 @@ print("Fixed phases clustering...")
 dataclust<-Mclust(elements, G=1:maxClust)
 }
 
+#####################################
+# Density
+#####################################
+
+density <- dens(modelName=dataclust$modelName, data = elements, parameters = dataclust$parameters)
+
+#image(interp(X,Y,density), col=1:5, pch = 1:20, cex.lab=1.7,main="Analysis")
 
 #####################################
 # Result extraction
@@ -419,6 +426,9 @@ dev.off()
 if(plotClust==T){
 	clustFile<-paste(rootName,"-clust-plots.pdf",sep="")
 	pdf(file=clustFile, width=dimPlot, height=dimPlot, onefile=T)
-	plot(dataclust)
+	plot(dataclust, what = "BIC", main = "BIC")
+	plot(dataclust, what = "classification", main = "classification")
+	plot(dataclust, what = "uncertainty", main = "uncertainty")
+	plot(dataclust, what = "density", main = "density")
 	dev.off()
 	}
