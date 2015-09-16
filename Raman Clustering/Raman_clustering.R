@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 1-20150914c
+# Version 1-20150916a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -10,8 +10,8 @@
 #
 ##########################################################
 
-sampleName<- "test-col-clan"
-# sampleName<- "test2-col-clan"
+sampleName<- "Dracken-7-tracky_rat_map2_fit2-col-clan"
+# sampleName<- "Draken_intensities_map1_fit2-col-clan"
 
 NumPar=6
  Par=c("HC","wG","D1G","D4D5G","DG","D5G")
@@ -130,20 +130,20 @@ if(normcoord==T){
 
 dataFile<-paste(rootName,"-plain-maps.pdf",sep="")
 pdf(file=dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); 
 par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 image(interp(X,Y,A), main=Par[1])
 image(interp(X,Y,B), main=Par[2])
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T));  
 par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 image(interp(X,Y,C), main=Par[3])
 image(interp(X,Y,D), main=Par[4])
 
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T));  
 par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 image(interp(X,Y,E), main=Par[5])
@@ -320,8 +320,7 @@ dev.off()
 dataFile<-paste(rootName,"-maps.pdf",sep="")
 pdf(file=dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,B,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[2],xlim=c(min(A),max(A)),ylim=c(min(B),max(B)))
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
@@ -341,8 +340,7 @@ image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab
 
 #-----
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[3],xlim=c(min(A),max(A)),ylim=c(min(C),max(C)))
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
@@ -352,8 +350,7 @@ image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab
 
 #-----
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[4],xlim=c(min(A),max(A)),ylim=c(min(D),max(D)))
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
@@ -363,8 +360,7 @@ image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab
 
 #-----
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[5],xlim=c(min(A),max(A)),ylim=c(min(E),max(E)))
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
@@ -374,8 +370,7 @@ image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab
 
 #-----
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,F,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[6],xlim=c(min(A),max(A)),ylim=c(min(F),max(F)))
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
@@ -385,8 +380,7 @@ image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab
 
 #-----
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(C,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[5],xlim=c(min(C),max(C)),ylim=c(min(E),max(E)))
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
@@ -396,8 +390,7 @@ image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab
 
 #-----
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(C,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[4],xlim=c(min(C),max(C)),ylim=c(min(D),max(D)))
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
@@ -407,8 +400,7 @@ image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab
 
 #-----
 
-layout(matrix(c(1,2,1,2), 4, 2, byrow = F)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(C,F,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[6],xlim=c(min(C),max(C)),ylim=c(min(F),max(F)))
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
