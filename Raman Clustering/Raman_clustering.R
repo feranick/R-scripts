@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 1-20150916c
+# Version 1-20150917a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -54,8 +54,8 @@ Dmatrix<-subset(file, Parameter == Par[4],select = c(Value))
 Ematrix<-subset(file, Parameter == Par[5],select = c(Value))
 Fmatrix<-subset(file, Parameter == Par[6] ,select = c(Value))
 #Gmatrix<-subset(file, Parameter == Par[7] ,select = c(Value))
-Xmatrix<-subset(file, Parameter =="X" ,select = c(Value))
-Ymatrix<-subset(file, Parameter =="Y" ,select = c(Value))
+Xmatrix<-subset(file, Parameter ==“Y” ,select = c(Value))
+Ymatrix<-subset(file, Parameter ==“X” ,select = c(Value))
 
 A<-Amatrix[,1]
 B<-Bmatrix[,1]
@@ -64,8 +64,8 @@ D<-Dmatrix[,1]
 E<-Ematrix[,1]
 F<-Fmatrix[,1]
 #G<-Gmatrix[,1]
-Xm<-Xmatrix[,1]
-Ym<-Ymatrix[,1]
+Xm <- Xmatrix[,1]
+Ym <- -Ymatrix[,1]
 
 
 #################################
