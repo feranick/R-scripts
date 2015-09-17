@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 1-20150916a
+# Version 1-20150916c
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -10,8 +10,8 @@
 #
 ##########################################################
 
-sampleName<- "Dracken-7-tracky_rat_map2_fit2-col-clan"
-# sampleName<- "Draken_intensities_map1_fit2-col-clan"
+sampleName<- “test-clan"
+# sampleName<- “test_2-clan"
 
 NumPar=6
  Par=c("HC","wG","D1G","D4D5G","DG","D5G")
@@ -21,7 +21,7 @@ NumPar=6
 maxClust=6
 
 dimPlot=8
-normcoord=T
+normcoord=F
 
 skimData=F
 
@@ -103,7 +103,8 @@ if(skimData==T){
 
 	plot(A,B, xlab=Par[1], ylab=Par[2], main="This data will be analyzed")}
 	
-	
+	#aspratio <- length(unique(Ym))/length(unique(Xm))
+	aspratio <- 1	
 ############################
 # Plotting plain Raman data
 ############################
@@ -133,21 +134,14 @@ pdf(file=dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); 
 par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
-image(interp(X,Y,A), main=Par[1])
-image(interp(X,Y,B), main=Par[2])
+image(interp(X,Y,A,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), xlim = c(min(X), max(X)), ylim = c(min(Y), max(Y)), asp = 1, main=Par[1])
+image(interp(X,Y,B,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[2])
 
-layout(matrix(c(1,2,1,2), 2, 2, byrow = T));  
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+image(interp(X,Y,C,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[3])
+image(interp(X,Y,D,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[4])
 
-image(interp(X,Y,C), main=Par[3])
-image(interp(X,Y,D), main=Par[4])
-
-
-layout(matrix(c(1,2,1,2), 2, 2, byrow = T));  
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
-
-image(interp(X,Y,E), main=Par[5])
-image(interp(X,Y,F), main=Par[6])
+image(interp(X,Y,E,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[5])
+image(interp(X,Y,F,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[6])
 
 #legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase,pch = 1:numPhase%%10+15, cex = 1.5)
 #grid(gridx,gridy, lwd = 1,equilogs =FALSE)
@@ -333,10 +327,8 @@ if(normcoord==T){
 		X=Xm;
 		Y=Ym;}	
 
-#dev.new(width=7, height=7)
-image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
-#legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase,pch = 1:numPhase%%10+15, cex = 1.5)
-#grid(gridx,gridy, lwd = 1,equilogs =FALSE)
+#image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
 
 #-----
 
@@ -346,8 +338,7 @@ plot(A,C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[3],xli
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
-
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
@@ -356,8 +347,7 @@ plot(A,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[4],xli
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
-
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
@@ -366,8 +356,7 @@ plot(A,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[5],xli
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
-
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
@@ -376,8 +365,7 @@ plot(A,F,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[6],xli
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
-
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
@@ -386,8 +374,7 @@ plot(C,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[5],xli
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
-
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
@@ -396,8 +383,7 @@ plot(C,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[4],xli
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
-
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
@@ -406,10 +392,9 @@ plot(C,F,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[6],xli
 legend("bottomright", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
 
 dev.off()
-
 
 #####################################
 # Mapping the clustering plots
