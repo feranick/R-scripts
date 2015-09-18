@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 1-20150917a
+# Version 1-20150918a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -10,8 +10,8 @@
 #
 ##########################################################
 
-sampleName<- “test-clan"
-# sampleName<- “test_2-clan"
+sampleName<- "Draken_ratios_map1_fit2-col-clan"
+# sampleName<- "Draken_intensities_map1_fit2-col-clan"
 
 NumPar=6
  Par=c("HC","wG","D1G","D4D5G","DG","D5G")
@@ -27,6 +27,8 @@ skimData=F
 
 limClust=F
 plotClust=T
+
+csvAsOut=F  # Set to false is normal txt output
 
 ############################
 # File name management 
@@ -54,8 +56,8 @@ Dmatrix<-subset(file, Parameter == Par[4],select = c(Value))
 Ematrix<-subset(file, Parameter == Par[5],select = c(Value))
 Fmatrix<-subset(file, Parameter == Par[6] ,select = c(Value))
 #Gmatrix<-subset(file, Parameter == Par[7] ,select = c(Value))
-Xmatrix<-subset(file, Parameter ==“Y” ,select = c(Value))
-Ymatrix<-subset(file, Parameter ==“X” ,select = c(Value))
+Xmatrix<-subset(file, Parameter =="Y" ,select = c(Value))
+Ymatrix<-subset(file, Parameter =="X" ,select = c(Value))
 
 A<-Amatrix[,1]
 B<-Bmatrix[,1]
@@ -158,10 +160,10 @@ dataset<-cbind(A,B,C,D,E,F)
 elements<-cbind(A,B,C,D,E,F)
 
 if(limClust==T){
-print("Full clustering...")	
-dataclust<-Mclust(elements)} else {
-print("Fixed phases clustering...")		
-dataclust<-Mclust(elements, G=1:maxClust)
+	print("Cluster analysis in progress: using unlimited number of clusters...")	
+	dataclust<-Mclust(elements)} else {
+	print("Cluster analysis in progress: using fixed number of clusters...")		
+	dataclust<-Mclust(elements, G=1:maxClust)
 }
 
 #####################################
@@ -223,8 +225,13 @@ omeanZ<-meanZ[Order]
 
 Clusto<-cbind(dataset,Sort.Phase,Xm,Ym)
 colnames(Clusto) <- c(Par,"Phase","X","Y")
-ClusFile<-paste(rootName,"-Clustering-Details-Tot.csv",sep="")
-write.csv(Clusto,file=ClusFile)
+if(csvAsOut==T){
+	print("Save clustering file as csv")	
+	write.csv(Clusto,paste(rootName,"-Clustering-Details-Tot.csv",sep=""))
+} else {
+	print("Save clustering file as txt")	
+	write.table(Clusto,paste(rootName,"-Clustering-Details-Tot.txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)
+}
 
 
 ##############################################################
@@ -233,14 +240,23 @@ for(i in 1:numPhase)
 	{
 	phaser<-subset(Clusto,Clusto[,NumPar+1]==i)
 	cov<-oSIGMA[,,i]
-	write.csv(phaser,paste(rootName,"-Clustering-Details-",i,".csv",sep=""))
+	if(csvAsOut==T){	
+		write.csv(phaser,paste(rootName,"-Clustering-Details-",i,".csv",sep=""))
+	} else {
+		write.table(phaser, paste(rootName,"-Clustering-Details-",i,".txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)}	
 	}
 
 Summary<-rbind(sortedMean,stdA,stdB,stdC,stdD,stdE,stdF,Vol.F)
 
 ##write.csv(Summary,paste(sampleName,"Clustering Details.csv",sep=" "),colNames = TRUE,sheet ="Summary",append=TRUE,from=c(4,6))
-SumFile<-paste(rootName,"-summary.csv",sep="")
-write.csv(Summary,file=SumFile)
+
+
+if(csvAsOut==T){
+    	SumFile=paste(rootName,"-summary.csv",sep="")
+    	write.csv(Summary,file=SumFile)
+} else {
+    	SumFile=paste(rootName,"-summary.txt",sep="")
+    	write.table(Summary, file = SumFile, quote = FALSE, sep = "\t", col.names = NA)}
 
 #####################################
 # Plots - A-B-C-D
