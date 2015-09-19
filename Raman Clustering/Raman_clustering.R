@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20150918d
+# Version 2-20150918e
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -13,7 +13,7 @@
 ##########################################################
 # input file is direclty from the data sheet
 ##########################################################
-inputFile<- "Draken_ratios_map1_fit2-col.txt"
+inputFile<- "Dracken-7-tracky_int_map2_fit2-col.txt"
 
 ############################
 # Script parameters
@@ -75,8 +75,8 @@ C<-y[,4]
 D<-y[,5]
 E<-y[,6]
 F<-y[,7]
-Xm<-y[,8]
-Ym<-y[,9]
+Xm <- y[,9]
+Ym <- -y[,8]
 
 
 ############################
