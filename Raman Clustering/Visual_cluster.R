@@ -2,7 +2,7 @@
 #
 # Visualize clusters in Raman cluster analysis
 #
-# Version 2-20150918d
+# Version 2-20150918e
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -13,12 +13,12 @@
 ##########################################################
 # input file is directly used from the clustering analysis
 ##########################################################
-inputFile="Draken_ratios_map1_fit2-col-Clustering-Details-Tot.txt"
+inputFile="Draken_intensities_map1_fit2-col-Clustering-Details-Tot.txt"
 
 ############################
 # Visualization parameters
 ############################
-hct = 0.2 # H:C threshold
+hct = 0.4 # H:C threshold
 ph = 2 # phase of interest
 
 ############################
@@ -106,15 +106,18 @@ if(skimData==T){
 ############################
 # Extract data from phases
 ############################
-A2 <- noquote(A)
+A2 <- A
+Aav = {}
 
 for(i in 1:length(A)){
 	if(G[i]==ph){
+		Aav = c(Aav, A[i])
 		if(A[i] <= hct) {A2[i]=1}
 			else{A2[i]=2}
 			}
 	else {A2[i]=0}		
 }
+
 
 ############################
 # Plotting plain Raman maps
@@ -128,15 +131,15 @@ if(normcoord==T){
 		X=Xm;
 		Y=Ym;}	
 
-
 dataFile<-paste(parValue,paste("-phase-",ph,"_hct",hct,".pdf"),sep="")
 pdf(file=dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.0,cex.main=1.3,cex.axis=1.0,cex=1)
 
 
-image(interp(X,Y,A,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), xlim = c(min(X), max(X)), ylim = c(min(Y), max(Y)), asp = 1, main=Par[1])
-image(interp(X,Y,A2,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = 1, main=paste("Phase: ",ph," - H:C threshold = ",hct), col=1:3)
+image(interp(X,Y,A,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), xlim = c(min(X), max(X)), ylim = c(min(Y), max(Y)), asp = 1, main=paste("Mean HC = ",round(mean(A),2),"\u00b1",round(sd(A),2)))
+
+image(interp(X,Y,A2,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = 1, main=paste("Phase: ",ph," - H:C threshold = ",hct,"- Average H:C = ",round(mean(Aav),2),"\u00b1",round(sd(Aav),2)), col=1:3)
 
 dev.off()
 
