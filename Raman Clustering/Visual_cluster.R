@@ -2,7 +2,7 @@
 #
 # Visualize clusters in Raman cluster analysis
 #
-# Version 2-20150918c
+# Version 2-20150918d
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -10,17 +10,27 @@
 #
 ##########################################################
 
-sampleName<- "Draken_ratios_map1_fit2-col-Clustering-Details-Tot-clan"
-
-NumPar=7
- Par=c("HC","wG","D1G","D4D5G","DG","D5G", "Phase")
-# Par=c("HC","wG","G","D1","D5","D4")
+##########################################################
+# input file is directly used from the clustering analysis
+##########################################################
+inputFile="Draken_ratios_map1_fit2-col-Clustering-Details-Tot.txt"
 
 ############################
 # Visualization parameters
 ############################
-hct = 0.2
-ph = 1 # phase of interest
+hct = 0.2 # H:C threshold
+ph = 2 # phase of interest
+
+############################
+# Load Libraries 
+############################
+library(Hmisc);library(pixmap)
+library(matlab); library(akima)
+palette=(c("black","red","blue","magenta","green", "yellow"))
+
+############################
+# Script parameters
+############################
 
 dimPlot=8
 normcoord=F
@@ -30,55 +40,43 @@ plotClust=T
 csvAsOut=F  # Set to false is normal txt output
 
 ############################
-# File name management 
+# File load and handling
 ############################
-rootName=gsub("-clan","",sampleName)
-fileName<-paste(sampleName,".txt",sep="")
-file<-read.delim(fileName, header = TRUE, sep="\t" )
+
+parValue=gsub(".txt","",inputFile)
+if(csvAsOut==TRUE){
+    outputFile=paste(parValue,"-clan.csv",sep="")} else {
+        
+        outputFile=paste(parValue,"-clan.txt",sep="")}
+
+# Get and Set current working directory
+(WD <- getwd())
+if (!is.null(WD)) setwd(WD)
+print(WD)
 
 
-############################
-# Load Libraries 
-############################
-library(Hmisc);library(pixmap)
-library(matlab); library(akima)
-palette=(c("black","red","blue","magenta","green", "yellow"))
+# Read Matrix From File
+m=read.table(inputFile, header = FALSE, fill = TRUE)
 
+Par =matrix(NA, ncol(m)-1, 1)
 
-############################
-# Read the data 
-############################
-Amatrix<-subset(file, Parameter == Par[1], select = c(Value))
-Bmatrix<-subset(file, Parameter == Par[2], select = c(Value))
-Cmatrix<-subset(file, Parameter == Par[3] ,select = c(Value))
-Dmatrix<-subset(file, Parameter == Par[4],select = c(Value))
-Ematrix<-subset(file, Parameter == Par[5],select = c(Value))
-Fmatrix<-subset(file, Parameter == Par[6] ,select = c(Value))
-Gmatrix<-subset(file, Parameter == Par[7] ,select = c(Value))
-Xmatrix<-subset(file, Parameter =="X" ,select = c(Value))
-Ymatrix<-subset(file, Parameter =="Y" ,select = c(Value))
+for(i in 1:ncol(m)-1){
+    Par[i]=as.character(m[1,i])
+}
 
-A<-Amatrix[,1]
-B<-Bmatrix[,1]
-C<-Cmatrix[,1]
-D<-Dmatrix[,1]
-E<-Ematrix[,1]
-F<-Fmatrix[,1]
-G<-Gmatrix[,1]
-Xm <- Xmatrix[,1]
-Ym <- Ymatrix[,1]
+m=read.table(inputFile, header = FALSE, fill = TRUE)
 
+y <- matrix(scan(inputFile, n = (nrow(m))*(ncol(m)), what = double(), skip = 1), nrow(m)-1, ncol(m), byrow = TRUE)
 
-#################################
-# Make sure the matrix is numeric
-#################################
-A[is.na(A)] <- 0
-B[is.na(B)] <- 0
-C[is.na(C)] <- 0
-D[is.na(D)] <- 0
-E[is.na(E)] <- 0
-F[is.na(F)] <- 0
-G[is.na(G)] <- 0
+A<-y[,2]
+B<-y[,3]
+C<-y[,4]
+D<-y[,5]
+E<-y[,6]
+F<-y[,7]
+G<-y[,8]
+Xm<-y[,9]
+Ym<-y[,10]
 
 
 ############################
@@ -87,7 +85,7 @@ G[is.na(G)] <- 0
 if(skimData==T){
 	n<-1
 	while(n==1)
-		{	dev.new(width=dimPlot, height=dimPlot)
+		{dev.new(width=dimPlot, height=dimPlot)
 		plot(A,B, xlab=Par[1], ylab=Par[2], main="Press the mouse right button to refresh, close graph to continue")
 		ind<-identify(A,B,tolerance =0.1,labels="M", plot = TRUE)
 
@@ -105,20 +103,20 @@ if(skimData==T){
 
 	plot(A,B, xlab=Par[1], ylab=Par[2], main="This data will be analyzed")}
 	
+
 ############################
 # Extract data from phases
 ############################
-A2 <- A
-A2
+A2 <- noquote(A)
+
 for(i in 1:length(A)){
 	if(G[i]==ph){
-		if(A[i]<hct){A2[i]=1}
+		if(A[i] <= hct) {A2[i]=1}
 			else{A2[i]=2}
 			}
 	else {A2[i]=0}		
-	
 }
-A2[1]
+
 ############################
 # Plotting plain Raman maps
 ############################
@@ -132,10 +130,11 @@ if(normcoord==T){
 		Y=Ym;}	
 
 
-dataFile<-paste(rootName,paste("-phase-",ph,"_hct",hct,".pdf"),sep="")
+dataFile<-paste(parValue,paste("-phase-",ph,"_hct",hct,".pdf"),sep="")
 pdf(file=dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); 
 par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+
 
 image(interp(X,Y,A,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), xlim = c(min(X), max(X)), ylim = c(min(Y), max(Y)), asp = 1, main=Par[1])
 image(interp(X,Y,A2,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = 1, main=paste("Phase: ",ph," - H:C threshold = ",hct), col=1:3)
