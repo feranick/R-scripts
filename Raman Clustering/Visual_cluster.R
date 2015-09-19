@@ -2,7 +2,7 @@
 #
 # Visualize clusters in Raman cluster analysis
 #
-# Version 2-20150918b
+# Version 2-20150918c
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -105,27 +105,11 @@ if(skimData==T){
 
 	plot(A,B, xlab=Par[1], ylab=Par[2], main="This data will be analyzed")}
 	
-	#aspratio <- length(unique(Ym))/length(unique(Xm))
-	aspratio <- 1	
-############################
-# Plotting plain Raman data
-############################
-
-dataFile<-paste(rootName,"-data.pdf",sep="")
-pdf(file=dataFile, width=dimPlot, height=dimPlot, onefile=T)
-#plot(A,B, xlab=Par[1], ylab=Par[2])
-#plot(A,C, xlab=Par[1], ylab=Par[3])
-#plot(B,E, xlab=Par[2], ylab=Par[6])
-#plot(B,C, xlab=Par[2], ylab=Par[3])
-dev.off()
-
-
-
 ############################
 # Extract data from phases
 ############################
 A2 <- A
-
+A2
 for(i in 1:length(A)){
 	if(G[i]==ph){
 		if(A[i]<hct){A2[i]=1}
@@ -134,9 +118,7 @@ for(i in 1:length(A)){
 	else {A2[i]=0}		
 	
 }
-
-
-
+A2[1]
 ############################
 # Plotting plain Raman maps
 ############################
@@ -156,7 +138,7 @@ layout(matrix(c(1,2,1,2), 2, 2, byrow = T));
 par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 image(interp(X,Y,A,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), xlim = c(min(X), max(X)), ylim = c(min(Y), max(Y)), asp = 1, main=Par[1])
-image(interp(X,Y,A2,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=paste("Phase: ",ph," - H:C threshold = ",hct), col=1:3)
+image(interp(X,Y,A2,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = 1, main=paste("Phase: ",ph," - H:C threshold = ",hct), col=1:3)
 
 dev.off()
 
