@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 1-20150918a
+# Version 2-20150918d
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -10,32 +10,25 @@
 #
 ##########################################################
 
-sampleName<- "Draken_ratios_map1_fit2-col-clan"
-# sampleName<- "Draken_intensities_map1_fit2-col-clan"
+##########################################################
+# input file is direclty from the data sheet
+##########################################################
+inputFile<- "Draken_ratios_map1_fit2-col.txt"
 
-NumPar=6
- Par=c("HC","wG","D1G","D4D5G","DG","D5G")
-# Par=c("HC","wG","G","D1","D5","D4")
-#Par=c("A","B","C", "D","E","F")
-
+############################
+# Script parameters
+############################
 maxClust=6
+NumPar=6
+# Par=c("HC","wG","D1G","D4D5G","DG","D5G") # No lonver used.
+#Par=c("A","B","C", "D","E","F")
 
 dimPlot=8
 normcoord=F
-
 skimData=F
-
 limClust=F
 plotClust=T
-
 csvAsOut=F  # Set to false is normal txt output
-
-############################
-# File name management 
-############################
-rootName=gsub("-clan","",sampleName)
-fileName<-paste(sampleName,".txt",sep="")
-file<-read.delim(fileName, header = TRUE, sep="\t" )
 
 
 ############################
@@ -47,39 +40,43 @@ palette=(c("black","red","blue","magenta","green", "yellow"))
 
 
 ############################
-# Read the data 
+# File load and handling
 ############################
-Amatrix<-subset(file, Parameter == Par[1], select = c(Value))
-Bmatrix<-subset(file, Parameter == Par[2], select = c(Value))
-Cmatrix<-subset(file, Parameter == Par[3] ,select = c(Value))
-Dmatrix<-subset(file, Parameter == Par[4],select = c(Value))
-Ematrix<-subset(file, Parameter == Par[5],select = c(Value))
-Fmatrix<-subset(file, Parameter == Par[6] ,select = c(Value))
-#Gmatrix<-subset(file, Parameter == Par[7] ,select = c(Value))
-Xmatrix<-subset(file, Parameter =="Y" ,select = c(Value))
-Ymatrix<-subset(file, Parameter =="X" ,select = c(Value))
 
-A<-Amatrix[,1]
-B<-Bmatrix[,1]
-C<-Cmatrix[,1]
-D<-Dmatrix[,1]
-E<-Ematrix[,1]
-F<-Fmatrix[,1]
-#G<-Gmatrix[,1]
-Xm <- Xmatrix[,1]
-Ym <- -Ymatrix[,1]
+rootName=gsub(".txt","",inputFile)
+
+if(csvAsOut==TRUE){
+    outputFile=paste(rootName,"-clan.csv",sep="")} else {
+        
+        outputFile=paste(rootName,"-clan.txt",sep="")}
+
+# Get and Set current working directory
+(WD <- getwd())
+if (!is.null(WD)) setwd(WD)
+print(WD)
 
 
-#################################
-# Make sure the matrix is numeric
-#################################
-A[is.na(A)] <- 0
-B[is.na(B)] <- 0
-C[is.na(C)] <- 0
-D[is.na(D)] <- 0
-E[is.na(E)] <- 0
-F[is.na(F)] <- 0
-#G[is.na(G)] <- 0
+# Read Matrix From File
+m=read.table(inputFile, header = FALSE, fill = TRUE)
+
+Par =matrix(NA, ncol(m)-1, 1)
+
+for(i in 1:ncol(m)-1){
+    Par[i]=as.character(m[1,i])
+}
+
+m=read.table(inputFile, header = FALSE, fill = TRUE)
+
+y <- matrix(scan(inputFile, n = (nrow(m))*(ncol(m)), what = double(), skip = 1), nrow(m)-1, ncol(m), byrow = TRUE)
+
+A<-y[,2]
+B<-y[,3]
+C<-y[,4]
+D<-y[,5]
+E<-y[,6]
+F<-y[,7]
+Xm<-y[,8]
+Ym<-y[,9]
 
 
 ############################
@@ -122,7 +119,6 @@ dev.off()
 ############################
 # Plotting plain Raman maps
 ############################
-
 
 if(normcoord==T){
 	X<-(Xm-min(Xm))

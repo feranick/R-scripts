@@ -22,22 +22,21 @@ hct = 0.2 # H:C threshold
 ph = 2 # phase of interest
 
 ############################
-# Load Libraries 
-############################
-library(Hmisc);library(pixmap)
-library(matlab); library(akima)
-palette=(c("black","red","blue","magenta","green", "yellow"))
-
-############################
 # Script parameters
 ############################
-
 dimPlot=8
 normcoord=F
 skimData=F
 limClust=F
 plotClust=T
 csvAsOut=F  # Set to false is normal txt output
+
+############################
+# Load Libraries 
+############################
+library(Hmisc);library(pixmap)
+library(matlab); library(akima)
+palette=(c("black","red","blue","magenta","green", "yellow"))
 
 ############################
 # File load and handling
