@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20150918e
+# Version 2-20150921b
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -13,14 +13,14 @@
 ##########################################################
 # input file is direclty from the data sheet
 ##########################################################
-inputFile<- "Dracken-7-tracky_int_map2_fit2-col.txt"
+inputFile<- "Draken_ratios_map1_fit2-col.txt"
 
 ############################
 # Script parameters
 ############################
 maxClust=6
-NumPar=6
-# Par=c("HC","wG","D1G","D4D5G","DG","D5G") # No lonver used.
+
+# Par=c("HC","wG","D1G","D4D5G","DG","D5G") # No longer used.
 #Par=c("A","B","C", "D","E","F")
 
 dimPlot=8
@@ -59,11 +59,13 @@ print(WD)
 # Read Matrix From File
 m=read.table(inputFile, header = FALSE, fill = TRUE)
 
-Par =matrix(NA, ncol(m)-1, 1)
+Par = matrix(NA, ncol(m)-1, 1)
 
 for(i in 1:ncol(m)-1){
     Par[i]=as.character(m[1,i])
 }
+
+numPar = length(Par)-2
 
 m=read.table(inputFile, header = FALSE, fill = TRUE)
 
@@ -77,7 +79,6 @@ E<-y[,6]
 F<-y[,7]
 Xm <- y[,9]
 Ym <- -y[,8]
-
 
 ############################
 # Removing spurious data
@@ -127,7 +128,7 @@ if(normcoord==T){
 		X=Xm;
 		Y=Ym;}	
 
-dataFile<-paste(rootName,"-plain-maps.pdf",sep="")
+dataFile<-paste(rootName,"-data-maps.pdf",sep="")
 pdf(file=dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); 
 par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
@@ -192,9 +193,9 @@ mean<-dataclust$parameters$mean
 
 Order<-order(mean[1,]) ### sort phases based on M and return index of each one
 
-oSIGMA<- array(0,c(NumPar,NumPar,numPhase))
+oSIGMA<- array(0,c(numPar,numPar,numPhase))
 oSIGMA[,,1:numPhase]<-dataclust$parameters$variance$sigma[,,Order] #### covaraince of each phase: sorted
-sortedMean<-mean[,Order]  ##### Sorted mean 
+sortedMean<-mean[,Order]  ##### Sorted mean
 
 Vol.F<-array(0,numPhase)
 Vol.F[1:numPhase]<-dataclust$parameters$pro[Order]*100   ### sorted volume fractions
@@ -219,14 +220,15 @@ for (j in 1:numPhase)
 omeanZ<-meanZ[Order]
 
 
+
 Clusto<-cbind(dataset,Sort.Phase,Xm,Ym)
-colnames(Clusto) <- c(Par,"Phase","X","Y")
+colnames(Clusto) <- c(Par[1:numPar],"Phase","X","Y")
 if(csvAsOut==T){
 	print("Save clustering file as csv")	
-	write.csv(Clusto,paste(rootName,"-Clustering-Details-Tot.csv",sep=""))
+	write.csv(Clusto,paste(rootName,"-clust-all.csv",sep=""))
 } else {
 	print("Save clustering file as txt")	
-	write.table(Clusto,paste(rootName,"-Clustering-Details-Tot.txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)
+	write.table(Clusto,paste(rootName,"-clust-all.txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)
 }
 
 
@@ -234,24 +236,24 @@ if(csvAsOut==T){
 
 for(i in 1:numPhase)
 	{
-	phaser<-subset(Clusto,Clusto[,NumPar+1]==i)
+	phaser<-subset(Clusto,Clusto[,numPar+1]==i)
 	cov<-oSIGMA[,,i]
 	if(csvAsOut==T){	
-		write.csv(phaser,paste(rootName,"-Clustering-Details-",i,".csv",sep=""))
+		write.csv(phaser,paste(rootName,"-clust-",i,".csv",sep=""))
 	} else {
-		write.table(phaser, paste(rootName,"-Clustering-Details-",i,".txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)}	
+		write.table(phaser, paste(rootName,"-clust-",i,".txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)}	
 	}
 
 Summary<-rbind(sortedMean,stdA,stdB,stdC,stdD,stdE,stdF,Vol.F)
 
-##write.csv(Summary,paste(sampleName,"Clustering Details.csv",sep=" "),colNames = TRUE,sheet ="Summary",append=TRUE,from=c(4,6))
-
+rownames(Summary) <- append(Par[1:numPar],append(paste("stdev_",Par[1:numPar],sep=""),"Vol.Fr"))
+colnames(Summary) <- colnames(sortedMean,do.NULL=FALSE, prefix="Phase_")
 
 if(csvAsOut==T){
-    	SumFile=paste(rootName,"-summary.csv",sep="")
+    	SumFile=paste(rootName,"-clust-summary.csv",sep="")
     	write.csv(Summary,file=SumFile)
 } else {
-    	SumFile=paste(rootName,"-summary.txt",sep="")
+    	SumFile=paste(rootName,"-clust-summary.txt",sep="")
     	write.table(Summary, file = SumFile, quote = FALSE, sep = "\t", col.names = NA)}
 
 #####################################
@@ -260,7 +262,7 @@ if(csvAsOut==T){
 
 #dev.new(width=dimPlot*2, height=dimPlot)
 
-dataFile<-paste(rootName,"-clust.pdf",sep="")
+dataFile<-paste(rootName,"-clust-plots.pdf",sep="")
 pdf(dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
 layout(matrix(c(1,1,2,3,1,1,4,5), 2, 4, byrow = F)); 
 
@@ -323,7 +325,7 @@ dev.off()
 
 #dev.new(width=dimPlot*2, height=dimPlot)
 
-dataFile<-paste(rootName,"-maps.pdf",sep="")
+dataFile<-paste(rootName,"-clust-maps.pdf",sep="")
 pdf(file=dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
@@ -340,7 +342,7 @@ if(normcoord==T){
 		Y=Ym;}	
 
 #image(interp(X,Y,Sort.Phase), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis")
-image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.4,main="Phase distribution",asp = aspratio)
 
 #-----
 
@@ -413,7 +415,7 @@ dev.off()
 #####################################
 
 if(plotClust==T){
-	clustFile<-paste(rootName,"-clust-plots.pdf",sep="")
+	clustFile<-paste(rootName,"-clust-analytics.pdf",sep="")
 	pdf(file=clustFile, width=dimPlot, height=dimPlot, onefile=T)
 	plot(dataclust, what = "BIC", main = "BIC")
 	plot(dataclust, what = "classification", main = "classification")
@@ -421,3 +423,35 @@ if(plotClust==T){
 	plot(dataclust, what = "density", main = "density")
 	dev.off()
 	}
+	
+############################
+# Extract data from phases
+############################
+	
+dataFile<-paste(rootName,paste("-clust-maps-phases.pdf", sep=""),sep="")
+pdf(file=dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
+
+for (j in 1:numPhase){
+
+A2 <- A
+Aav = {}
+
+for(i in 1:length(A)){
+	if(Sort.Phase[i]==j){
+		Aav = c(Aav, A[i])
+		A2[i]=1
+			}
+	else {A2[i]=0}		
+}
+
+
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.0,cex.main=1.3,cex.axis=1.0,cex=1)
+
+
+image(interp(X,Y,A,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), xlim = c(min(X), max(X)), ylim = c(min(Y), max(Y)), asp = 1, main=paste("Mean HC = ",round(mean(A),2),"\u00b1",round(sd(A),2)))
+
+image(interp(X,Y,A2,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = 1, main=paste("Phase: ",j," - Average H:C = ",round(mean(Aav),2),"\u00b1",round(sd(Aav),2)), col=1:3)
+}
+
+dev.off()
