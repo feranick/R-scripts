@@ -246,7 +246,7 @@ for(i in 1:numPhase)
 
 Summary<-rbind(sortedMean,stdA,stdB,stdC,stdD,stdE,stdF,Vol.F)
 
-rownames(Summary) <- append(Par[1:numPar],append(paste("stdev_",Par[1:numPar],sep=""),"Vol.Fr"))
+rownames(Summary) <- append(Par[1:numPar],append(paste("sd_",Par[1:numPar],sep=""),"Vol.Fr"))
 colnames(Summary) <- colnames(sortedMean,do.NULL=FALSE, prefix="Phase_")
 
 if(csvAsOut==T){

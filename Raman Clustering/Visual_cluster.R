@@ -13,12 +13,12 @@
 ##########################################################
 # input file is directly used from the clustering analysis
 ##########################################################
-inputFile="Draken_ratios_map1_fit2-col-Clustering-Details-Tot.txt"
+inputFile="Draken_ratios_map1_fit2-col-clust-all.txt"
 
 ############################
 # Visualization parameters
 ############################
-hct = 0 # H:C threshold
+hct = 0.5 # H:C threshold
 
 ############################
 # Script parameters
