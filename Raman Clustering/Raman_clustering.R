@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20150921b
+# Version 2-20151002a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -13,14 +13,14 @@
 ##########################################################
 # input file is direclty from the data sheet
 ##########################################################
-inputFile<- "Draken_ratios_map1_fit2-col.txt"
+inputFile<- "Draken_7_map3_bs_denoised_map-ratio_orig.txt"
 
 ############################
 # Script parameters
 ############################
 maxClust=6
 
-# Par=c("HC","wG","D1G","D4D5G","DG","D5G") # No longer used.
+# Par=c("HC","wG","D5G","D1G, "D4D5G","DG") # No longer used.
 #Par=c("A","B","C", "D","E","F")
 
 dimPlot=8
@@ -87,9 +87,11 @@ if(skimData==T){
 	n<-1
 	while(n==1)
 		{	dev.new(width=dimPlot, height=dimPlot)
-		plot(A,B, xlab=Par[1], ylab=Par[2], main="Press the mouse right button to refresh, close graph to continue")
-		ind<-identify(A,B,tolerance =0.1,labels="M", plot = TRUE)
-
+		plot(A,D, xlab=Par[1], ylab=Par[4], main="Press the mouse right button to refresh after a selection,\n or to continue if no point is selected")
+		ind<-identify(A,D,tolerance = 0.1,labels="M", plot = TRUE)
+		
+		if(!length(ind)) break
+		
 		A<-A[-ind]
 		B<-B[-ind]
 		C<-C[-ind]
@@ -101,7 +103,7 @@ if(skimData==T){
 		dev.off()
 		}
 
-	plot(A,B, xlab=Par[1], ylab=Par[2], main="This data will be analyzed")}
+	plot(A,D, xlab=Par[1], ylab=Par[4], main="This data will be analyzed")}
 	
 	#aspratio <- length(unique(Ym))/length(unique(Xm))
 	aspratio <- 1	
