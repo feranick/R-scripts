@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20151003a
+# Version 2-20151003b
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -13,21 +13,21 @@
 ##########################################################
 # input file is direclty from the data sheet
 ##########################################################
-inputFile<- "Draken_7_map3_bs_denoised_map-ratio.csv"
+inputFile<- "Draken_7_map3_bs_denoised_map-ratio.txt"
 
 ############################
 # Script parameters
 ############################
 maxClust=6
 
-labSpec=F	# Set to true if maps acquired with LabSpec
+labSpec=T	# Set to true if maps acquired with LabSpec
 			# if F, also set csvAsIn = T
 			# if T, also set csvAsIn = F
 			
-cvsAsIn=T	# Set to false is normal txt input 
+cvsAsIn=F	# Set to false is normal txt input 
 csvAsOut=F  # Set to false for normal txt output
 
-skimData=T
+skimData=F
 
 dimPlot=8
 normcoord=F
@@ -65,14 +65,16 @@ print(WD)
 
 # Read Matrix From File
 if(cvsAsIn==FALSE) {
-	m=read.table(inputFile, header = FALSE, fill = TRUE)} else {
+	m=read.table(inputFile, header = FALSE, fill = TRUE)
+	} else {
 		m=read.csv(inputFile, header = FALSE)}
 
 Par = matrix(NA, ncol(m)-1, 1)
-
-for(i in 1:ncol(m)-1){
-    Par[i]=as.character(m[1,i])
-	}
+for(i in 1:ncol(m)-1)
+    	{if(cvsAsIn==FALSE) 
+    		{Par[i]=as.character(m[1,i])}    			
+    			else 
+    			{Par[i]=as.character(m[1,i+1])}}	
 
 numPar = length(Par)-2
 
