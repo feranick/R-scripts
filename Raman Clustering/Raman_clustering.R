@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20151002a
+# Version 2-20151003a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -13,23 +13,28 @@
 ##########################################################
 # input file is direclty from the data sheet
 ##########################################################
-inputFile<- "Draken_7_map3_bs_denoised_map-ratio_orig.txt"
+inputFile<- "Draken_7_map3_bs_denoised_map-ratio.csv"
 
 ############################
 # Script parameters
 ############################
 maxClust=6
 
-# Par=c("HC","wG","D5G","D1G, "D4D5G","DG") # No longer used.
-#Par=c("A","B","C", "D","E","F")
+labSpec=F	# Set to true if maps acquired with LabSpec
+			# if F, also set csvAsIn = T
+			# if T, also set csvAsIn = F
+			
+cvsAsIn=T	# Set to false is normal txt input 
+csvAsOut=F  # Set to false for normal txt output
+
+skimData=T
 
 dimPlot=8
 normcoord=F
-skimData=F
 limClust=F
 plotClust=T
-csvAsOut=F  # Set to false is normal txt output
 
+#Par=c("HC","wG","D5G","D1G, "D4D5G","DG") # No longer used.
 
 ############################
 # Load Libraries 
@@ -43,7 +48,10 @@ palette=(c("black","red","blue","magenta","green", "yellow"))
 # File load and handling
 ############################
 
-rootName=gsub(".txt","",inputFile)
+
+if(cvsAsIn==FALSE) {
+	rootName=gsub(".txt","",inputFile)} else{
+		rootName=gsub(".csv","",inputFile)}
 
 if(csvAsOut==TRUE){
     outputFile=paste(rootName,"-clan.csv",sep="")} else {
@@ -55,21 +63,27 @@ if(csvAsOut==TRUE){
 if (!is.null(WD)) setwd(WD)
 print(WD)
 
-
 # Read Matrix From File
-m=read.table(inputFile, header = FALSE, fill = TRUE)
+if(cvsAsIn==FALSE) {
+	m=read.table(inputFile, header = FALSE, fill = TRUE)} else {
+		m=read.csv(inputFile, header = FALSE)}
 
 Par = matrix(NA, ncol(m)-1, 1)
 
 for(i in 1:ncol(m)-1){
     Par[i]=as.character(m[1,i])
-}
+	}
 
 numPar = length(Par)-2
 
-m=read.table(inputFile, header = FALSE, fill = TRUE)
+if(cvsAsIn==FALSE) {
+	m=read.table(inputFile, header = FALSE, fill = TRUE)
+	y <- matrix(scan(inputFile, n = (nrow(m))*(ncol(m)), what = double(), skip = 1), nrow(m)-1, ncol(m), byrow = TRUE)} else {
+		
+	m=read.csv(inputFile, header = FALSE, skip = 1)
+	#y<-asnumeric(as.character(m))}
+	y<-m}
 
-y <- matrix(scan(inputFile, n = (nrow(m))*(ncol(m)), what = double(), skip = 1), nrow(m)-1, ncol(m), byrow = TRUE)
 
 A<-y[,2]
 B<-y[,3]
@@ -77,8 +91,14 @@ C<-y[,4]
 D<-y[,5]
 E<-y[,6]
 F<-y[,7]
-Xm <- y[,9]
-Ym <- -y[,8]
+
+if(labSpec == TRUE) {
+	Xm <- y[,9]
+	Ym <- -y[,8]
+	} else {
+		Xm <- y[,8]
+		Ym <- y[,9]}
+	
 
 ############################
 # Removing spurious data
