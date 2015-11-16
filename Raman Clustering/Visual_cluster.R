@@ -2,7 +2,7 @@
 #
 # Visualize clusters in Raman cluster analysis
 #
-# Version 2-20150921c
+# Version 2-20151116a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -142,12 +142,12 @@ layout(matrix(c(1,2,1,2), 2, 2, byrow = T));
 par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.0,cex.main=1.3,cex.axis=1.0,cex=1)
 
 
-image(interp(X,Y,A,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), xlim = c(min(X), max(X)), ylim = c(min(Y), max(Y)), asp = 1, main=paste("Mean HC = ",round(mean(A),2),"\u00b1",round(sd(A),2)))
+image(interp(X,Y,A,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), xlim = c(min(X), max(X)), ylim = c(min(Y), max(Y)), asp = 1, main=paste("Mean H:C = ",round(mean(A),2),"\u00b1",round(sd(A),2)))
 
 image(interp(X,Y,A2,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = 1, main=paste("Phase: ",j,"- Average H:C = ",round(mean(Aav),2),"\u00b1",round(sd(Aav),2)), col=1:3)
 
 if(legend == TRUE){
-	legend("bottomright", c("Other phases", paste("HC < ", hct, sep=""),paste("HC > ", hct, sep="")), col=1:3,pch = 1:3%%10+15, cex = 1.2, bg = "white")
+	legend("bottomright", c("Other phases", paste("H:C < ", hct, sep=""),paste("H:C > ", hct, sep="")), col=1:3,pch = 1:3%%10+15, cex = 1.2, bg = "white")
 	}
 
 }
