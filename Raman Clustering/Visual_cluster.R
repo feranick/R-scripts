@@ -2,7 +2,7 @@
 #
 # Visualize clusters in Raman cluster analysis
 #
-# Version 2-20151116a
+# Version 2-20151117b
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -43,7 +43,7 @@ palette=(c("black","red","blue","magenta","green", "yellow"))
 ############################
 
 parValue=gsub(".txt","",inputFile)
-if(csvAsOut==TRUE){
+if(csvAsOut==T){
     outputFile=paste(parValue,"-clan.csv",sep="")} else {
         
         outputFile=paste(parValue,"-clan.txt",sep="")}

@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20151117a
+# Version 2-20151117b
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -49,11 +49,11 @@ palette=(c("black","red","blue","magenta","green", "yellow"))
 ############################
 
 
-if(cvsAsIn==FALSE) {
+if(cvsAsIn==F) {
 	rootName=gsub(".txt","",inputFile)} else{
 		rootName=gsub(".csv","",inputFile)}
 
-if(csvAsOut==TRUE){
+if(csvAsOut==T){
     outputFile=paste(rootName,"-clan.csv",sep="")} else {
         
         outputFile=paste(rootName,"-clan.txt",sep="")}
@@ -64,21 +64,21 @@ if (!is.null(WD)) setwd(WD)
 print(WD)
 
 # Read Matrix From File
-if(cvsAsIn==FALSE) {
+if(cvsAsIn==F) {
 	m=read.table(inputFile, header = FALSE, fill = TRUE)
 	} else {
 		m=read.csv(inputFile, header = FALSE)}
 
 Par = matrix(NA, ncol(m)-1, 1)
 for(i in 1:ncol(m)-1)
-    	{if(cvsAsIn==FALSE) 
+    	{if(cvsAsIn==F) 
     		{Par[i]=as.character(m[1,i])}    			
     			else 
     			{Par[i]=as.character(m[1,i+1])}}	
 
 numPar = length(Par)-2
 
-if(cvsAsIn==FALSE) {
+if(cvsAsIn==F) {
 	m=read.table(inputFile, header = FALSE, fill = TRUE)
 	y <- matrix(scan(inputFile, n = (nrow(m))*(ncol(m)), what = double(), skip = 1), nrow(m)-1, ncol(m), byrow = TRUE)} else {
 		
@@ -94,7 +94,7 @@ D<-y[,5]
 E<-y[,6]
 F<-y[,7]
 
-if(labSpec == TRUE) {
+if(labSpec == T) {
 	Xm <- y[,9]
 	Ym <- -y[,8]
 	} else {
