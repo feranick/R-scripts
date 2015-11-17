@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20151116a
+# Version 2-20151117a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -13,7 +13,7 @@
 ##########################################################
 # input file is direclty from the data sheet
 ##########################################################
-inputFile<- "Draken_intensities_map1_fit2-col.txt"
+inputFile<- "Draken_map1_fit3-den_intensities-col.txt"
 
 ############################
 # Script parameters
@@ -280,28 +280,17 @@ if(csvAsOut==T){
     	SumFile=paste(rootName,"-clust-summary.txt",sep="")
     	write.table(Summary, file = SumFile, quote = FALSE, sep = "\t", col.names = NA)}
 
-#####################################
-# Plots - A-B-C-D
-#####################################
+############################################
+# Phase, allocation, Colume fraction plots
+############################################
 
 #dev.new(width=dimPlot*2, height=dimPlot)
 
 dataFile<-paste(rootName,"-clust-plots.pdf",sep="")
 pdf(dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
-layout(matrix(c(1,1,2,3,1,1,4,5), 2, 4, byrow = F)); 
+layout(matrix(c(1,2,3,4,5,6,7,8), 2, 4, byrow = F)); 
 
 par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),family="serif")
-
-plot(A,B,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[2],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
-#grid(NULL, lwd = 1,equilogs =FALSE)
-
-for (i in 1:numPhase)
-	{
-	cov<-oSIGMA[1:2,1:2,i]
-	mu<-sortedMean[1:2,i]
-	lines(ellipse(cov,centre=mu,level=0.95))
-	}
 
 errbar(c(1:numPhase),sortedMean[1,],sortedMean[1,]+stdA,sortedMean[1,]-stdA,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[1],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[1,])#;   title("A (A)",cex.main=1.8)
 
@@ -311,28 +300,6 @@ errbar(c(1:numPhase),sortedMean[3,],sortedMean[3,]+stdC,sortedMean[3,]-stdC,cex.
 
 errbar(c(1:numPhase),sortedMean[4,],sortedMean[4,]+stdD,sortedMean[4,]-stdD,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[4],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[4,])#;   title("B (H)",cex.main=1.8)
 
-
-#####################################
-# Plots - E-F - Vol. Frac. - Alloc
-#####################################
-
-#dev.new(width=dimPlot*2, height=dimPlot)
-layout(matrix(c(1,1,2,3,1,1,4,5), 2, 4, byrow = F)); 
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5))
-
-par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),family="serif")
-
-plot(C,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[4],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
-#grid(NULL, lwd = 1,equilogs =FALSE)
-
-for (i in 1:numPhase)
-	{
-	cov<-oSIGMA[3:4,3:4,i]
-	mu<-sortedMean[3:4,i]
-	lines(ellipse(cov,centre=mu,level=0.95))
-	}
-
 errbar(c(1:numPhase),sortedMean[5,],sortedMean[5,]+stdE,sortedMean[5,]-stdE,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[5],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[5,])#;   title("A (A)",cex.main=1.8)
 
 errbar(c(1:numPhase),sortedMean[6,],sortedMean[6,]+stdF,sortedMean[6,]-stdF,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[6],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[6,])#;   title("B (H)",cex.main=1.8)
@@ -340,6 +307,127 @@ errbar(c(1:numPhase),sortedMean[6,],sortedMean[6,]+stdF,sortedMean[6,]-stdF,cex.
 barplot(Vol.F,cex.lab=1.5,cex.main=1.8, width = 0.2,col=1:numPhase+1,xlab="Phase",ylab="Volume Fraction [%]",names.arg = c(1:numPhase),cex.names=1.5,cex.axis=1.5, ylim=c(0,80))#;   title("Volume Fractions",cex.main=1.8)
 
 barplot(omeanZ,cex.lab=1.5,cex.main=1.8, width = 0.2,col=1:numPhase+1,xlab="Phase",ylab="Allocation Rate",names.arg = c(1:numPhase),cex.names=1.5,cex.axis=1.5,ylim=c(0,1))#;   title("Uncertainty",cex.main=1.8)
+
+
+#####################################
+# Covariance Plots
+#####################################
+
+#dev.new(width=dimPlot*2, height=dimPlot)
+layout(matrix(c(1,1,2,2,1,1,2,2), 2, 4, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),family="serif")
+
+plot(C,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[4],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
+#grid(NULL, lwd = 1,equilogs =FALSE)
+
+for (i in 1:numPhase)
+	{
+	cov<-oSIGMA[c(3,4),c(3,4),i]
+	mu<-sortedMean[c(3,4),i]
+	lines(ellipse(cov,centre=mu,level=0.95))
+	}
+legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+
+plot(C,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[5],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
+#grid(NULL, lwd = 1,equilogs =FALSE)
+
+for (i in 1:numPhase)
+	{
+	cov<-oSIGMA[c(3,5),c(3,5),i]
+	mu<-sortedMean[c(3,5),i]
+	lines(ellipse(cov,centre=mu,level=0.95))
+	}
+legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+	
+#dev.new(width=dimPlot*2, height=dimPlot)
+layout(matrix(c(1,1,2,2,1,1,2,2), 2, 4, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),family="serif")
+
+
+plot(A,C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[3],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
+#grid(NULL, lwd = 1,equilogs =FALSE)
+
+for (i in 1:numPhase)
+	{
+	cov<-oSIGMA[c(1,3),c(1,3),i]
+	mu<-sortedMean[c(1,3),i]
+	lines(ellipse(cov,centre=mu,level=0.95))
+	}
+legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)	
+
+
+plot(A,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[5],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
+#grid(NULL, lwd = 1,equilogs =FALSE)
+
+for (i in 1:numPhase)
+	{
+	cov<-oSIGMA[c(1,5),c(1,5),i]
+	mu<-sortedMean[c(1,5),i]
+	lines(ellipse(cov,centre=mu,level=0.95))
+	}
+legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+
+
+#dev.new(width=dimPlot*2, height=dimPlot)
+layout(matrix(c(1,1,2,2,1,1,2,2), 2, 4, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),family="serif")
+
+plot(A,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[4],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
+#grid(NULL, lwd = 1,equilogs =FALSE)
+
+for (i in 1:numPhase)
+	{
+	cov<-oSIGMA[c(1,4),c(1,4),i]
+	mu<-sortedMean[c(1,4),i]
+	lines(ellipse(cov,centre=mu,level=0.95))
+	}
+legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+
+plot(A,B,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[2],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
+#grid(NULL, lwd = 1,equilogs =FALSE)
+
+for (i in 1:numPhase)
+	{
+	cov<-oSIGMA[1:2,1:2,i]
+	mu<-sortedMean[1:2,i]
+	lines(ellipse(cov,centre=mu,level=0.95))
+	}
+legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+
+layout(matrix(c(1,1,2,2,1,1,2,2), 2, 4, byrow = F)); 
+par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),family="serif")
+
+#################################################################
+### Debugging only
+#################################################################
+
+plot(E/C,C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,ylab=Par[3],xlab="D5/G",cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7,xlim=c(0, 1))
+#grid(NULL, lwd = 1,equilogs =FALSE)
+
+for (i in 1:numPhase)
+	{
+	cov<-oSIGMA[c(c(5)/c(3),3),c(c(5)/c(3),3),i]
+	mu<-sortedMean[c(c(5)/c(3),3),i]
+	lines(ellipse(cov,centre=mu,level=0.95))
+	}
+
+legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+
+plot(A,E/C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab="D5/G",cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7,ylim=c(0, 2))
+#grid(NULL, lwd = 1,equilogs =FALSE)
+
+for (i in 1:numPhase)
+	{
+	cov<-oSIGMA[c(1,c(5)/c(3)),c(1,c(5)/c(3)),i]
+	mu<-sortedMean[c(1,c(5)/c(3)),i]
+	lines(ellipse(cov,centre=mu,level=0.95))
+	}
+
+legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+
+#################################################################
+#################################################################
+
 
 dev.off()
  
