@@ -401,29 +401,29 @@ par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),family="serif")
 ### Debugging only
 #################################################################
 
-plot(E/C,C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,ylab=Par[3],xlab="D5/G",cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7,xlim=c(0, 1))
+#plot(E/C,C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,ylab=Par[3],xlab="D5/G",cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7,xlim=c(0, 1))
 #grid(NULL, lwd = 1,equilogs =FALSE)
 
-for (i in 1:numPhase)
-	{
-	cov<-oSIGMA[c(c(5)/c(3),3),c(c(5)/c(3),3),i]
-	mu<-sortedMean[c(c(5)/c(3),3),i]
-	lines(ellipse(cov,centre=mu,level=0.95))
-	}
+#for (i in 1:numPhase)
+#	{
+#	cov<-oSIGMA[c(c(5)/c(3),3),c(c(5)/c(3),3),i]
+#	mu<-sortedMean[c(c(5)/c(3),3),i]
+#	lines(ellipse(cov,centre=mu,level=0.95))
+#	}
 
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+#legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
-plot(A,E/C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab="D5/G",cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7,ylim=c(0, 2))
+#plot(A,E/C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab="D5/G",cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7,ylim=c(0, 2))
 #grid(NULL, lwd = 1,equilogs =FALSE)
 
-for (i in 1:numPhase)
-	{
-	cov<-oSIGMA[c(1,c(5)/c(3)),c(1,c(5)/c(3)),i]
-	mu<-sortedMean[c(1,c(5)/c(3)),i]
-	lines(ellipse(cov,centre=mu,level=0.95))
-	}
+#for (i in 1:numPhase)
+#	{
+#	cov<-oSIGMA[c(1,c(5)/c(3)),c(1,c(5)/c(3)),i]
+#	mu<-sortedMean[c(1,c(5)/c(3)),i]
+#	lines(ellipse(cov,centre=mu,level=0.95))
+#	}
 
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+#legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
 #################################################################
 #################################################################
