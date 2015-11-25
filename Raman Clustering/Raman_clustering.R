@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20151118a
+# Version 2-20151125a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -18,7 +18,7 @@ inputFile<- "Draken_map1_fit3-den_intensities-col.txt"
 ############################
 # Script parameters
 ############################
-maxClust=5
+maxClust=6
 
 labSpec=T	# Set to true if maps acquired with LabSpec
 			# if F, also set csvAsIn = T
@@ -166,7 +166,7 @@ image(interp(X,Y,D,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(mi
 image(interp(X,Y,E,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[5])
 image(interp(X,Y,F,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[6])
 
-#legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase,pch = 1:numPhase%%10+15, cex = 1.5)
+#legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase,pch = 1:numPhase%%10+15, cex = 1.5)
 #grid(gridx,gridy, lwd = 1,equilogs =FALSE)
 
 dev.off()
@@ -326,7 +326,7 @@ for (i in 1:numPhase)
 	mu<-sortedMean[c(3,4),i]
 	lines(ellipse(cov,centre=mu,level=0.95))
 	}
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
 plot(C,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[5],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
 #grid(NULL, lwd = 1,equilogs =FALSE)
@@ -337,7 +337,7 @@ for (i in 1:numPhase)
 	mu<-sortedMean[c(3,5),i]
 	lines(ellipse(cov,centre=mu,level=0.95))
 	}
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 	
 #dev.new(width=dimPlot*2, height=dimPlot)
 layout(matrix(c(1,1,2,2,1,1,2,2), 2, 4, byrow = F)); 
@@ -353,7 +353,7 @@ for (i in 1:numPhase)
 	mu<-sortedMean[c(1,3),i]
 	lines(ellipse(cov,centre=mu,level=0.95))
 	}
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)	
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)	
 
 
 plot(A,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[5],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
@@ -365,7 +365,7 @@ for (i in 1:numPhase)
 	mu<-sortedMean[c(1,5),i]
 	lines(ellipse(cov,centre=mu,level=0.95))
 	}
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
 
 #dev.new(width=dimPlot*2, height=dimPlot)
@@ -381,7 +381,7 @@ for (i in 1:numPhase)
 	mu<-sortedMean[c(1,4),i]
 	lines(ellipse(cov,centre=mu,level=0.95))
 	}
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase ), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
 plot(A,B,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[2],cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7)
 #grid(NULL, lwd = 1,equilogs =FALSE)
@@ -392,7 +392,7 @@ for (i in 1:numPhase)
 	mu<-sortedMean[1:2,i]
 	lines(ellipse(cov,centre=mu,level=0.95))
 	}
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
 
 #################################################################
@@ -409,7 +409,7 @@ legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPh
 #	mu<-sortedMean[c(2,c(4)/c(3)),i]
 #	lines(ellipse(cov,centre=mu,level=0.95)) }
 
-#legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+#legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
 #plot(A,D/C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab="D1/G",cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7,ylim=c(0.5, 3))
 
@@ -418,7 +418,7 @@ legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPh
 #	mu<-sortedMean[c(1,c(4)/c(3)),i]
 #	lines(ellipse(cov,centre=mu,level=0.95)) }
 
-#legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+#legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
 #layout(matrix(c(1,1,2,2,1,1,2,2), 2, 4, byrow = F)); 
 #par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),family="serif")
@@ -430,7 +430,7 @@ legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPh
 #	mu<-sortedMean[c(c(5)/c(3),3),i]
 #	lines(ellipse(cov,centre=mu,level=0.95))	}
 
-#legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+#legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
 #plot(A,E/C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab="D5/G",cex.lab=1.7,cex.main=2,cex.axis=1.7,cex=1.7,ylim=c(0, 2))
 
@@ -439,7 +439,7 @@ legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPh
 #	mu<-sortedMean[c(1,c(5)/c(3)),i]
 #	lines(ellipse(cov,centre=mu,level=0.95))	}
 
-#legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+#legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 
 #################################################################
 #################################################################
@@ -459,7 +459,7 @@ pdf(file=dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,B,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[2],xlim=c(min(A),max(A)),ylim=c(min(B),max(B)))
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
 if(normcoord==T){
@@ -477,64 +477,64 @@ image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,C,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[3],xlim=c(min(A),max(A)),ylim=c(min(C),max(C)))
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[4],xlim=c(min(A),max(A)),ylim=c(min(D),max(D)))
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[5],xlim=c(min(A),max(A)),ylim=c(min(E),max(E)))
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,F,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[6],xlim=c(min(A),max(A)),ylim=c(min(F),max(F)))
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(C,E,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[5],xlim=c(min(C),max(C)),ylim=c(min(E),max(E)))
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(C,D,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[4],xlim=c(min(C),max(C)),ylim=c(min(D),max(D)))
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,asp = aspratio)
 #-----
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(C,F,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[3],ylab=Par[6],xlim=c(min(C),max(C)),ylim=c(min(F),max(F)))
-legend("bottomright", bg = "white", paste("Phase(", 1:numPhase,")"), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
-image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,main="Analysis",asp = aspratio)
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,asp = aspratio)
 
 dev.off()
 
