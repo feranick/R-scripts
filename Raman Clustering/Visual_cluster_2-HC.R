@@ -2,7 +2,8 @@
 #
 # Visualize clusters in Raman cluster analysis
 #
-# Version 2-20151117b
+# Version 2-20151125a
+# (two regions H:C)
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
