@@ -3,7 +3,7 @@
 # Conversion of LabSpec Maps/Matrices into single columns
 # for cluster analysis
 #
-# Version 4-20160902a
+# Version 4-20160902b
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -16,7 +16,9 @@ fullOut=T # Set to true for full matrix ready for clustering
 
 XName="X"
 YName="Y"
-csvOut=T  # Set to false is normal txt output
+
+eachOut=F # Set to true to produce individual files
+csvOut=T  # Set to false is normal txt output for individual files
 
 ##########################################
 # Get list of Files
@@ -111,10 +113,12 @@ for(p in 1:nrow(inputFile)){
 
 	# Save new file
 	#write.table(a, file = outputFile, col.names = T, row.names = F)
-	if(csvOut==TRUE){
-    		write.csv(a, file = outputFile[p], row.names = F)} else {
-        write.table(a, file = outputFile[p], quote = FALSE, sep = "\t", col.names = T, row.names = F)}
-}
+	if(eachOut==TRUE){
+		if(csvOut==TRUE){
+    			write.csv(a, file = outputFile[p], row.names = F)} else {
+        		write.table(a, file = outputFile[p], quote = FALSE, sep = "\t", col.names = T, row.names = F)}
+		}
+	}
 
 ##############################################
 # Save full matrix (if needed)
