@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20151125a
+# Version 2-20160901a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -13,7 +13,7 @@
 ##########################################################
 # input file is direclty from the data sheet
 ##########################################################
-inputFile<- "Draken_map1_fit3-den_intensities-col.txt"
+inputFile<- "regions_1591_X-col.txt"
 
 ############################
 # Script parameters
@@ -41,7 +41,7 @@ plotClust=T
 ############################
 library(mclust);library(ellipse);library(Hmisc);library(pixmap)
 library(matlab); library(akima)
-palette=(c("black","red","blue","magenta","green", "yellow"))
+palette=(c("black","red","blue","magenta","green", "yellow","brown"))
 
 
 ############################
@@ -77,6 +77,8 @@ for(i in 1:ncol(m)-1)
     			{Par[i]=as.character(m[1,i+1])}}	
 
 numPar = length(Par)-2
+print("numPar: ")
+print(numPar)
 
 if(cvsAsIn==F) {
 	m=read.table(inputFile, header = FALSE, fill = TRUE)
@@ -93,13 +95,14 @@ C<-y[,4]
 D<-y[,5]
 E<-y[,6]
 F<-y[,7]
+G<-y[,8]
 
 if(labSpec == T) {
-	Xm <- y[,9]
-	Ym <- -y[,8]
+	Xm <- y[,10]
+	Ym <- -y[,9]
 	} else {
-		Xm <- y[,8]
-		Ym <- y[,9]}
+		Xm <- y[,9]
+		Ym <- y[,10]}
 	
 
 ############################
@@ -120,6 +123,7 @@ if(skimData==T){
 		D<-D[-ind]
 		E<-E[-ind]
 		F<-F[-ind]
+		G<-G[-ind]
 		Xm<-Xm[-ind]
 		Ym<-Ym[-ind]
 		dev.off()
@@ -166,6 +170,9 @@ image(interp(X,Y,D,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(mi
 image(interp(X,Y,E,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[5])
 image(interp(X,Y,F,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[6])
 
+image(interp(X,Y,G,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), asp = aspratio, main=Par[7])
+
+
 #legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase,pch = 1:numPhase%%10+15, cex = 1.5)
 #grid(gridx,gridy, lwd = 1,equilogs =FALSE)
 
@@ -176,9 +183,9 @@ dev.off()
 # Clustering
 ############################
 
-dataset<-cbind(A,B,C,D,E,F)
+dataset<-cbind(A,B,C,D,E,F,G)
 
-elements<-cbind(A,B,C,D,E,F)
+elements<-cbind(A,B,C,D,E,F,G)
 
 if(limClust==T){
 	print("Cluster analysis in progress: using unlimited number of clusters...")	
@@ -211,6 +218,7 @@ stdC<-rep(0,numPhase)
 stdD<-rep(0,numPhase)
 stdE<-rep(0,numPhase)
 stdF<-rep(0,numPhase)
+stdG<-rep(0,numPhase)
 
 Alloc<-cbind(phase,Z)  ## to find alloacation rates
 mean<-dataclust$parameters$mean
@@ -240,6 +248,7 @@ for (j in 1:numPhase)
 	stdD[j]<-sqrt(oSIGMA[4,4,j])
 	stdE[j]<-sqrt(oSIGMA[5,5,j])
 	stdF[j]<-sqrt(oSIGMA[6,6,j])
+	stdG[j]<-sqrt(oSIGMA[7,7,j])
 	}
 omeanZ<-meanZ[Order]
 
@@ -268,7 +277,7 @@ for(i in 1:numPhase)
 		write.table(phaser, paste(rootName,"-clust-",i,".txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)}	
 	}
 
-Summary<-rbind(sortedMean,stdA,stdB,stdC,stdD,stdE,stdF,Vol.F)
+Summary<-rbind(sortedMean,stdA,stdB,stdC,stdD,stdE,stdF,stdG,Vol.F)
 
 rownames(Summary) <- append(Par[1:numPar],append(paste("sd_",Par[1:numPar],sep=""),"Vol.Fr"))
 colnames(Summary) <- colnames(sortedMean,do.NULL=FALSE, prefix="Phase_")
@@ -303,6 +312,8 @@ errbar(c(1:numPhase),sortedMean[4,],sortedMean[4,]+stdD,sortedMean[4,]-stdD,cex.
 errbar(c(1:numPhase),sortedMean[5,],sortedMean[5,]+stdE,sortedMean[5,]-stdE,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[5],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[5,])#;   title("A (A)",cex.main=1.8)
 
 errbar(c(1:numPhase),sortedMean[6,],sortedMean[6,]+stdF,sortedMean[6,]-stdF,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[6],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[6,])#;   title("B (H)",cex.main=1.8)
+
+errbar(c(1:numPhase),sortedMean[7,],sortedMean[7,]+stdF,sortedMean[7,]-stdF,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[7],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[6,])#;   title("B (H)",cex.main=1.8)
 
 barplot(Vol.F,cex.lab=1.5,cex.main=1.8, width = 0.2,col=1:numPhase+1,xlab="Phase",ylab="Volume Fraction [%]",names.arg = c(1:numPhase),cex.names=1.5,cex.axis=1.5, ylim=c(0,80))#;   title("Volume Fractions",cex.main=1.8)
 
@@ -504,6 +515,15 @@ image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
 plot(A,F,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[6],xlim=c(min(A),max(A)),ylim=c(min(F),max(F)))
+legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
+grid(NULL, lwd = 1,equilogs =FALSE)
+
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,asp = aspratio)
+#-----
+
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+
+plot(A,G,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[6],xlim=c(min(A),max(A)),ylim=c(min(G),max(G)))
 legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
