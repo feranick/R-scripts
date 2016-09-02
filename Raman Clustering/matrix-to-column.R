@@ -1,14 +1,18 @@
 ##########################################################
 #
 # Conversion of LabSpec Maps/Matrices into single columns
+# for cluster analysis
 #
-# Version 3-20150929a
+# Version 4-20160902a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
 # Released under GNU Public License v.3
 #
 ##########################################################
+
+fullOutput = "Cluster_matrix.txt"
+fullOut=T # Set to true for full matrix ready for clustering
 
 XName="X"
 YName="Y"
@@ -21,21 +25,47 @@ csvOut=T  # Set to false is normal txt output
 listOfFiles <- list.files(pattern= ".txt")
 inputFile<-as.matrix(listOfFiles)
 
+##########################################
 # Remove extension from file name
+##########################################
+
 for (i in 1:nrow(inputFile)){
-	
 	parValue=as.matrix(gsub(".txt","",inputFile))
-	
-if(csvOut==TRUE){
-    outputFile=paste(parValue,"-col.csv",sep="")} else {    
-    outputFile=paste(parValue,"-col.txt",sep="")}
-	
+	if(csvOut==TRUE){
+    		outputFile=paste(parValue,"-col.csv",sep="")} else {    
+    		outputFile=paste(parValue,"-col.txt",sep="")}	
 }
 
+##########################################
 # Get and Set current working directory
+##########################################
+
 (WD <- getwd())
 if (!is.null(WD)) setwd(WD)
-print(WD)
+	print(WD)
+
+##############################################
+# Read and initialize Full Matrix (if needed)
+##############################################
+
+if(fullOut==TRUE){
+	m = read.table(inputFile[1], header = FALSE, skip =1)
+	x <- matrix(scan(inputFile[1], n = nrow(m)*ncol(m), skip=1), nrow(m), ncol(m), byrow = TRUE)
+	fullMatrix <- matrix(NA , (nrow(x))*(ncol(x)-1), nrow(inputFile)+3)
+
+	#Initialize column names for fullMatrix
+	colnames(fullMatrix) <- vector(mode="character", length=nrow(inputFile)+3)
+	colnames(fullMatrix)[1] <- ""
+	for(q in 1:nrow(inputFile)){
+		colnames(fullMatrix)[q+1] <- parValue[q]	}
+	colnames(fullMatrix)[nrow(inputFile)+2] <- XName
+	colnames(fullMatrix)[nrow(inputFile)+3] <- YName
+	print(colnames(fullMatrix))
+	}
+
+##############################################
+# Process and save each matrix
+##############################################
 
 for(p in 1:nrow(inputFile)){
 	# Read Y coordinates from File
@@ -63,11 +93,19 @@ for(p in 1:nrow(inputFile)){
 	k=1
 	for(i in 1:nrow(x)){
     		for(j in 2:ncol(x)){
-        
         a[k,1]=k
         a[k,2]=x[i,j]
         a[k,3]=x[i,1]
         a[k,4]=x1[j]
+        
+        # Process data full matrix
+        if(fullOut==TRUE){
+        		fullMatrix[k,p+1]=x[i,j]
+        		if(p==1){
+        			fullMatrix[k,1]=k
+        			fullMatrix[k,nrow(inputFile)+2]=x[i,1]
+        			fullMatrix[k,nrow(inputFile)+3]=x1[j]
+        		}}
         k=k+1
     }}
 
@@ -77,3 +115,11 @@ for(p in 1:nrow(inputFile)){
     		write.csv(a, file = outputFile[p], row.names = F)} else {
         write.table(a, file = outputFile[p], quote = FALSE, sep = "\t", col.names = T, row.names = F)}
 }
+
+##############################################
+# Save full matrix (if needed)
+##############################################
+
+if(fullOut==TRUE){
+	print("Full matrix for clustering saved in: Cluster_matrix.txt")
+	write.table(fullMatrix, file = fullOutput, quote = FALSE, sep = "\t", col.names = T, row.names = F)}
