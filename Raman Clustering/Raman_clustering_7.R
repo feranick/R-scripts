@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-20160901a
+# Version 2-n7-20160906a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -313,7 +313,7 @@ errbar(c(1:numPhase),sortedMean[5,],sortedMean[5,]+stdE,sortedMean[5,]-stdE,cex.
 
 errbar(c(1:numPhase),sortedMean[6,],sortedMean[6,]+stdF,sortedMean[6,]-stdF,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[6],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[6,])#;   title("B (H)",cex.main=1.8)
 
-errbar(c(1:numPhase),sortedMean[7,],sortedMean[7,]+stdF,sortedMean[7,]-stdF,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[7],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[6,])#;   title("B (H)",cex.main=1.8)
+errbar(c(1:numPhase),sortedMean[7,],sortedMean[7,]+stdG,sortedMean[7,]-stdG,cex.lab=1.5,pch=16,xlab="Phase",ylab=Par[7],col=c(1:numPhase+1),cex=2,cex.axis=1.5,xaxt = "n");   axis(1, at = 1:numPhase,cex.axis=1.5);lines(sortedMean[7,])#;   title("B (H)",cex.main=1.8)
 
 barplot(Vol.F,cex.lab=1.5,cex.main=1.8, width = 0.2,col=1:numPhase+1,xlab="Phase",ylab="Volume Fraction [%]",names.arg = c(1:numPhase),cex.names=1.5,cex.axis=1.5, ylim=c(0,80))#;   title("Volume Fractions",cex.main=1.8)
 
@@ -523,7 +523,7 @@ image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), 
 
 layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
 
-plot(A,G,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[6],xlim=c(min(A),max(A)),ylim=c(min(G),max(G)))
+plot(A,G,col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[1],ylab=Par[7],xlim=c(min(A),max(A)),ylim=c(min(G),max(G)))
 legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase+1,pch = 1:numPhase%%10+15, cex = 1.5)
 grid(NULL, lwd = 1,equilogs =FALSE)
 
