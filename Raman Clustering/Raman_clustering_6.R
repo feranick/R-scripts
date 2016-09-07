@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-n6-20160906a
+# Version 2-n6-20160907a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -187,13 +187,20 @@ if(limClust==T){
 	dataclust<-Mclust(elements, G=1:maxClust)
 }
 
-#####################################
-# Density
-#####################################
+#########################################################
+# Computes densities of observations in parameterized MVN mixtures. 
+#########################################################
 
 density <- dens(modelName=dataclust$modelName, data = elements, parameters = dataclust$parameters)
-
+summary(density)
 #image(interp(X,Y,density), col=1:5, pch = 1:20, cex.lab=1.7,main="Analysis")
+
+#########################################################
+#Density Estimation via Model-Based Clustering 
+#########################################################
+
+density2 <- densityMclust(data = elements, modelName=dataclust$modelName, parameters = dataclust$parameters)
+summary(density2)
 
 #####################################
 # Result extraction
