@@ -13,7 +13,7 @@
 ##########################################################
 # input file is direclty from the data sheet
 ##########################################################
-inputFile<- "regions_1591_X-col.txt"
+inputFile<- "Cluster_matrix.txt"
 
 ############################
 # Script parameters
