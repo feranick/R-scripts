@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-n7-20160907a
+# Version 2-n7-20160907c
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -326,6 +326,8 @@ barplot(Vol.F,cex.lab=1.5,cex.main=1.8, width = 0.2,col=1:numPhase+1,xlab="Phase
 
 barplot(omeanZ,cex.lab=1.5,cex.main=1.8, width = 0.2,col=1:numPhase+1,xlab="Phase",ylab="Allocation Rate",names.arg = c(1:numPhase),cex.names=1.5,cex.axis=1.5,ylim=c(0,1))#;   title("Uncertainty",cex.main=1.8)
 
+layout(matrix(c(1,2,1,2), 2, 2, byrow = T)); par(mar=c(4,4,4,1),mai=c(0.8,0.8,0.5,0.5),cex.lab=1.3,cex.main=2,cex.axis=1.3,cex=1)
+image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), yo=seq(min(Y), max(Y), length = length(unique(Y)))), col=1:numPhase+1, pch = 1:numPhase%%10+15, cex.lab=1.7,asp = aspratio)
 
 #####################################
 # Covariance Plots
