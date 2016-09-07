@@ -2,7 +2,7 @@
 #
 # Visualize clusters in Raman cluster analysis
 #
-# Version 3-20151125b
+# Version 3-20160907c
 # (three regions H:C)
 #
 # Nicola Ferralis - ferralis@mit.edu
@@ -14,7 +14,7 @@
 ##########################################################
 # input file is directly used from the clustering analysis
 ##########################################################
-inputFile="HV_OB18_C15-R13-map1_fit4_intensities-clust-all.txt"
+inputFile="Cluster_matrix-clust-all.txt"
 
 ############################
 # Visualization parameters

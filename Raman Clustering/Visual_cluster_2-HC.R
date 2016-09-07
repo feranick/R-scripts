@@ -2,7 +2,7 @@
 #
 # Visualize clusters in Raman cluster analysis
 #
-# Version 3-20151125b
+# Version 3-20160907c
 # (two regions H:C)
 #
 # Nicola Ferralis - ferralis@mit.edu
@@ -14,7 +14,7 @@
 ##########################################################
 # input file is directly used from the clustering analysis
 ##########################################################
-inputFile="Draken_ratios_map1_fit2-col-clust-all.txt"
+inputFile="Cluster_matrix-clust-all.txt"
 
 ############################
 # Visualization parameters
