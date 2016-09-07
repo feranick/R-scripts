@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-n8-20160906a_Paraffin-Azo
+# Version 2-n8-20160907a_Paraffin-Azo
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -31,7 +31,7 @@ skimData=F
 
 dimPlot=8
 normcoord=F
-limClust=F
+limClust=T
 plotClust=T
 
 #Par=c("HC","wG","D5G","D1G, "D4D5G","DG") # No longer used.
@@ -191,20 +191,27 @@ dataset<-cbind(A,B,C,D,E,F,G,H)
 
 elements<-cbind(A,B,C,D,E,F,G,H)
 
-if(limClust==T){
+if(limClust==F){
 	print("Cluster analysis in progress: using unlimited number of clusters...")	
-	dataclust<-Mclust(elements)} else {
+	dataclust<-MclustBIC(elements)} else {
 	print("Cluster analysis in progress: using fixed number of clusters...")		
 	dataclust<-Mclust(elements, G=1:maxClust)
 }
 
-#####################################
-# Density
-#####################################
+#########################################################
+# Computes densities of observations in parameterized MVN mixtures. 
+#########################################################
 
 density <- dens(modelName=dataclust$modelName, data = elements, parameters = dataclust$parameters)
-
+summary(density)
 #image(interp(X,Y,density), col=1:5, pch = 1:20, cex.lab=1.7,main="Analysis")
+
+#########################################################
+#Density Estimation via Model-Based Clustering 
+#########################################################
+
+density2 <- densityMclust(data = elements, modelName=dataclust$modelName, parameters = dataclust$parameters, G=1:maxClust)
+summary(density2)
 
 #####################################
 # Result extraction

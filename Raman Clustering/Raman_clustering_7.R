@@ -31,7 +31,7 @@ skimData=F
 
 dimPlot=8
 normcoord=F
-limClust=F
+limClust=T
 plotClust=T
 
 #Par=c("HC","wG","D5G","D1G, "D4D5G","DG") # No longer used.
@@ -187,7 +187,7 @@ dataset<-cbind(A,B,C,D,E,F,G)
 
 elements<-cbind(A,B,C,D,E,F,G)
 
-if(limClust==T){
+if(limClust==F){
 	print("Cluster analysis in progress: using unlimited number of clusters...")	
 	dataclust<-Mclust(elements)} else {
 	print("Cluster analysis in progress: using fixed number of clusters...")		
