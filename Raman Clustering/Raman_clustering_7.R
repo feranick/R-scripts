@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 2-n7-20160907c
+# Version 2-n7-20160909a
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -108,15 +108,17 @@ if(labSpec == T) {
 ############################
 # Removing spurious data
 ############################
-if(skimData==T){
+skimFunction <- function(M1,M2,lab1,lab2){
 	n<-1
 	while(n==1)
 		{	dev.new(width=dimPlot, height=dimPlot)
-		plot(A,D, xlab=Par[1], ylab=Par[4], main="Press the mouse right button to refresh after a selection,\n or to continue if no point is selected")
-		ind<-identify(A,D,tolerance = 0.1,labels="M", plot = TRUE)
+		cat("Skimming data from: x =",lab1,"; y =",lab2)	
+		plot(M1,M2, xlab=lab1, ylab=lab2, main="Press the mouse right button to refresh after a selection,\n or to continue if no point is selected")
+		ind<-identify(M1,M2,tolerance = 0.1,labels="M", plot = TRUE)
 		
 		if(!length(ind)) break
-		
+		M1<-M1[-ind]
+		M2<-M2[-ind]
 		A<-A[-ind]
 		B<-B[-ind]
 		C<-C[-ind]
@@ -128,8 +130,16 @@ if(skimData==T){
 		Ym<-Ym[-ind]
 		dev.off()
 		}
+	plot(M1,M2, xlab=lab1, ylab=lab2, main="This data will be analyzed")
+}
 
-	plot(A,D, xlab=Par[1], ylab=Par[4], main="This data will be analyzed")}
+if(skimData==T){
+	skimFunction(A,B,Par[1],Par[2])
+	skimFunction(C,D,Par[3],Par[4])
+	skimFunction(E,F,Par[5],Par[6])
+	skimFunction(F,G,Par[6],Par[7])
+}
+
 	
 	#aspratio <- length(unique(Ym))/length(unique(Xm))
 	aspratio <- 1	
