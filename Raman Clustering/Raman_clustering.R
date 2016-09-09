@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 3-20160909b
+# Version 3-20160909d
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -13,12 +13,14 @@
 ##########################################################
 # input file is direclty from the data sheet
 ##########################################################
+
 inputFile<- "Cluster_matrix.txt"
 
 ############################
 # Script parameters
 ############################
-maxClust = 6
+
+maxClust = 4
 
 labSpec=T	# Set to true if maps acquired with LabSpec
 			# if F, also set csvAsIn = T
@@ -27,7 +29,7 @@ labSpec=T	# Set to true if maps acquired with LabSpec
 cvsAsIn=F	# Set to false is normal txt input 
 csvAsOut=F  # Set to false for normal txt output
 
-skimData=F
+skimData=T
 
 dimPlot=8
 normcoord=F
@@ -39,6 +41,7 @@ dataSetForThreshold = 1   # dataset to be used for extraction of data from phase
 ############################
 # Load Libraries 
 ############################
+
 library(mclust);library(ellipse);library(Hmisc);library(pixmap)
 library(matlab); library(akima)
 palette=(c("black","red","blue","magenta","green", "yellow","brown"))
@@ -46,7 +49,6 @@ palette=(c("black","red","blue","magenta","green", "yellow","brown"))
 ############################
 # File load and handling
 ############################
-
 
 if(cvsAsIn==F) {
 	rootName=gsub(".txt","",inputFile)} else{
@@ -90,12 +92,13 @@ if(cvsAsIn==F) {
 ############################
 # Remove index column	
 ############################
+
 y<-y[,-1]
 
-	
 ############################
 # Removing spurious data
 ############################
+
 skimFunction <- function(i1,i2){
 	n<-1
 	while(n==1)
@@ -106,22 +109,21 @@ skimFunction <- function(i1,i2){
 				
 		if(!length(ind)) break
 		y<-y[-ind,]
-		dev.off()
-		}
-	plot(y[,i1],y[,i2], xlab=Par[i1], ylab=Par[i2], main="This data will be analyzed")
-	return(y)
-}
+		dev.off()}
+	#plot(y[,i1],y[,i2], xlab=Par[i1], ylab=Par[i2], main="This data will be analyzed")
+	return(y)}
 
 if(skimData==T){
-	y<-skimFunction(1,2)
-}
-
-	#aspratio <- length(unique(Ym))/length(unique(Xm))
-	aspratio <- 1	
+	for(i in 2:numPar){
+		y<-skimFunction(1,i)}}
 	
 ############################
 # Setup coordinates	
 ############################
+
+#aspratio <- length(unique(Ym))/length(unique(Xm))
+aspratio <- 1
+
 if(labSpec == T) {
 	Xm <- y[,numPar+2]
 	Ym <- -y[,numPar+1]
@@ -162,13 +164,12 @@ for (i in 1:numPar){
 	#legend("bottomright", bg = "white", paste("Phase ", 1:numPhase), col=1:numPhase,pch = 1:numPhase%%10+15, cex = 1.5)
 	#grid(gridx,gridy, lwd = 1,equilogs =FALSE)
 	}
-
 dev.off()
-
 
 ############################
 # Clustering
 ############################
+
 dataset <-matrix(NA,length(y[,1]),0)
 for (i in 1:numPar) {
 	dataset<-cbind(dataset,y[,i])
@@ -226,16 +227,13 @@ stdM <-matrix(0,numPhase,numPar)
 
 for (j in 1:numPhase)
 	{
-	for (i in 1:numInd)
-		{
+	for (i in 1:numInd){
 		if (phase[i]==Order[j])
-		Sort.Phase[i]<-j
-		}
+			Sort.Phase[i]<-j}
 	meanZ[j]<-mean(subset(Alloc[,j+1],Alloc[,1]==j))
 	
 	for(f in 1:numPar){
-		stdM[j,f]<-sqrt(oSIGMA[f,f,j])}
-	}
+		stdM[j,f]<-sqrt(oSIGMA[f,f,j])}}
 	
 omeanZ<-meanZ[Order]
 
@@ -248,7 +246,6 @@ if(csvAsOut==T){
 	print("Save clustering file as txt")	
 	write.table(Clusto,paste(rootName,"-clust-all.txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)
 }
-
 
 ##############################################################
 
@@ -277,13 +274,11 @@ if(csvAsOut==T){
     	SumFile=paste(rootName,"-clust-summary.txt",sep="")
     	write.table(Summary, file = SumFile, quote = FALSE, sep = "\t", col.names = NA)}
     	
-    	
 ############################################
 # Phase, allocation, Colume fraction plots
 ############################################
 
 #dev.new(width=dimPlot*2, height=dimPlot)
-
 dataFile<-paste(rootName,"-clust-plots.pdf",sep="")
 pdf(dataFile, width=dimPlot*2, height=dimPlot, onefile=T)
 layout(matrix(c(1,2,3,4,5,6,7,8), 2, 4, byrow = F)); 
@@ -303,12 +298,9 @@ image(interp(X,Y,Sort.Phase,xo=seq(min(X), max(X), length = length(unique(X))), 
 
 dev.off()
 
-
- 
 #####################################
 # Mapping the phases
 #####################################
-
 
 plotClustMaps <-function(i1,i2){
 	plot(y[,i1],y[,i2],col=Sort.Phase+1,type="p",pch=Sort.Phase+15,xlab=Par[i1],ylab=Par[i2],xlim=c(min(y[,i1]),max(y[,i1])),ylim=c(min(y[,i2]),max(y[,i2])))
@@ -331,7 +323,6 @@ for (j in 1:numPar){
 			{plotClustMaps(j,i)}}}
 
 dev.off()
-
 
 #####################################
 # Mapping the clustering plots
