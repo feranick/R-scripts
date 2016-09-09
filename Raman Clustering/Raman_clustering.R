@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 3-20160909d
+# Version 3-20160909e
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -103,13 +103,17 @@ skimFunction <- function(i1,i2){
 	n<-1
 	while(n==1)
 		{	dev.new(width=dimPlot, height=dimPlot)
-		cat("Skimming data from: x =",Par[i1],"; y =",Par[i2],"\n")	
+		cat("\nSkimming data from: x =",Par[i1],"; y =",Par[i2],"\n")	
 		plot(y[,i1],y[,i2], xlab=Par[i1], ylab=Par[i2], main="Press the mouse right button to refresh after a selection,\n or to continue if no point is selected")
 		ind<-identify(y[,i1],y[,i2],tolerance = 0.1,labels="M", plot = TRUE)
 				
-		if(!length(ind)) break
+		if(!length(ind)){
+			dev.off()
+			break}
+		cat(" Removed datapoints: ", ind, "\n")
 		y<-y[-ind,]
-		dev.off()}
+		dev.off()
+		}
 	#plot(y[,i1],y[,i2], xlab=Par[i1], ylab=Par[i2], main="This data will be analyzed")
 	return(y)}
 
