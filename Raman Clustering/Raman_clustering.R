@@ -2,7 +2,7 @@
 #
 # Cluster analysis of Raman spectral maps
 #
-# Version 3-20160909e
+# Version 3-20160909f
 #
 # Nicola Ferralis - ferralis@mit.edu
 #
@@ -243,12 +243,17 @@ omeanZ<-meanZ[Order]
 
 Clusto<-cbind(dataset,Sort.Phase,Xm,Ym)
 colnames(Clusto) <- c(Par[1:numPar],"Phase","X","Y")
+
+clusterMatrixCorr <- Clusto[,-(numPar+1)]
+
 if(csvAsOut==T){
-	print("Save clustering file as csv")	
+	print("Save cluster matrix file as csv")	
 	write.csv(Clusto,paste(rootName,"-clust-all.csv",sep=""))
+	write.csv(clusterMatrixCorr,paste(rootName,"-corr.csv",sep=""))
 } else {
-	print("Save clustering file as txt")	
+	print("Save cluster matrix as txt")	
 	write.table(Clusto,paste(rootName,"-clust-all.txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)
+	write.table(clusterMatrixCorr,paste(rootName,"-corr.txt",sep=""), quote = FALSE, sep = "\t", col.names = NA)
 }
 
 ##############################################################
